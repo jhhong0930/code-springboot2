@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{layout/layout1 :: setContent(~{this::content})}">
+
+    <th:block th:fragment="content">
+
+        <h1>exTemplate Page</h1>
+
+        이곳에 내용을 작성하게 되면 <br>
+        layout1의 content 부분만 바꿔서 출력 가능!
+
+    </th:block>
+
+</th:block>
+
+</html>
