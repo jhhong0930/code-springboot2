@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .tartget {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<!--/* 인라인 표현식 [[ ]]으로 별도의 속성 지정 없이 출력 */-->
+<ul>
+    <li th:each="dto : ${list}">
+        [[${dto}]]
+    </li>
+</ul>
+
+<!-- state 변수 사용하여 index(0부터시작) 혹은 count(1부터시작) 사용 -->
+<ul>
+    <li th:each="dto, state : ${list}">
+        [[${state.index}]] --- [[${dto}]]
+    </li>
+</ul>
+
+<!-- 제어문 처리 -->
+<ul>
+    <li th:each="dto, state : ${list}" th:if="${dto.sno % 5 == 0}">
+        [[${dto}]]
+    </li>
+</ul>
+
+<!-- 반복문과 if 처리 -->
+<ul>
+    <li th:each="dto, state : ${list}">
+        <span th:if="${dto.sno % 5 == 0}" th:text="${'------ ' + dto.sno + ' ------'}"></span>
+        <span th:unless="${dto.sno % 5 == 0}" th:text="${dto.first}"></span>
+    </li>
+</ul>
+
+<!-- 삼항연산자 이용 -->
+<ul>
+    <li th:each="dto, state : ${list}" th:text="${dto.sno % 5 == 0} ? ${dto.sno}"></li>
+</ul>
+
+<ul>
+    <li th:each="dto, state : ${list}" th:text="${dto.sno % 5 == 0} ? ${dto.sno} : ${dto.first}"></li>
+</ul>
+
+<!-- class 속성 지정 -->
+<ul>
+    <li th:each="dto, state : ${list}" th:class="${dto.sno % 5 == 0} ? 'target'" th:text="${dto}"></li>
+</ul>
+
+<!-- th:block -->
+<ul>
+    <th:block th:each="dto: ${list}">
+        <li th:text="${dto.sno % 5 == 0} ? ${dto.sno} : ${dto.first}"></li>
+    </th:block>
+</ul>
+
+</body>
+</html>

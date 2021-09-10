@@ -27,6 +27,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // 숫자 포맷팅
+    implementation 'org.thymeleaf.extras:thyemleaf-extras-java8time'
 }
 
 test {
