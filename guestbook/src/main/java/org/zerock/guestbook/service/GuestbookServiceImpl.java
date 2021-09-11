@@ -56,4 +56,26 @@ public class GuestbookServiceImpl implements GuestbookService{
 
         return result.map(this::entityToDto).orElse(null);
     }
+
+    @Override
+    public void remove(Long gno) {
+
+        repository.deleteById(gno);
+    }
+
+    @Override
+    public void modify(GuestbookDTO dto) {
+
+        Optional<Guestbook> result = repository.findById(dto.getGno());
+
+        if (result.isPresent()) {
+
+            Guestbook entity = result.get();
+
+            entity.changeTitle(dto.getTitle());
+            entity.changeContent(dto.getContent());
+
+            repository.save(entity);
+        }
+    }
 }
