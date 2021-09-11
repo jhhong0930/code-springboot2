@@ -105,4 +105,11 @@ class BoardRepositoryTest {
         System.out.println(Arrays.toString(arr));
     }
 
+    @Test
+    @DisplayName("Querydsl 동작 테스트")
+    void testSearch1() {
+
+        repository.search1();
+    }
+
 }

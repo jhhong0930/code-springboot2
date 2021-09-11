@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.zerock.board.entity.Board;
+import org.zerock.board.repository.search.SearchBoardRepository;
 
 import java.util.List;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, SearchBoardRepository {
 
     // 한개의 행(Object) 내에 Object[] 로 나온다
     // 엔티티 클래스 내부에 연관관계가 있는 경우에는 join 뒤 on을 사용하지 않는다
