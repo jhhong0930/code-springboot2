@@ -112,4 +112,15 @@ class BoardRepositoryTest {
         repository.search1();
     }
 
+    @Test
+    @DisplayName("검색 테스트")
+    void testSearchPage() {
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno")
+                .descending()
+                .and(Sort.by("title").ascending()));
+
+        Page<Object[]> result = repository.searchPage("t", "1", pageable);
+    }
+
 }
