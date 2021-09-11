@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.board.entity.Board;
 import org.zerock.board.entity.Reply;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -49,6 +50,15 @@ class ReplyRepositoryTest {
 
         System.out.println(reply);
         System.out.println(reply.getBoard());
+    }
+
+    @Test
+    @DisplayName("댓글 조회 테스트")
+    void testGetRepliesByBoardOrderByRno() {
+
+        List<Reply> replyList = repository.getRepliesByBoardOrderByRno(Board.builder().bno(97L).build());
+
+        replyList.forEach(System.out::println);
     }
 
 }
