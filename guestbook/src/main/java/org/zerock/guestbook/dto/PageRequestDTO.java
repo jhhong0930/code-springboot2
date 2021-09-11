@@ -14,6 +14,8 @@ public class PageRequestDTO {
 
     private int page;
     private int size;
+    private String type; // 검색 타입(조건)
+    private String keyword; // 검색 키워드
 
     public PageRequestDTO() {
         this.page = 1;  // 페이지 번호
