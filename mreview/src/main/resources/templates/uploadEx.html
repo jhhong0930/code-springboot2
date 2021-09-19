@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<input name="uploadFiles" type="file" multiple>
+<button class="uploadBtn">Upload</button>
+
+<div class="uploadResult">
+
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+
+<script>
+
+    $('.uploadBtn').click(function () {
+
+        var formData = new FormData();
+
+        var inputFiles = $("input[type='file']");
+
+        var files = inputFiles[0].files;
+
+        for (var i = 0; i < files.length; i++) {
+            console.log(files[i]);
+            formData.append("uploadFiles", files[i]);
+        }
+
+        // 실제 업로드 부분
+        $.ajax({
+            url: '/uploadAjax',
+            processData: false,
+            contentType: false, // multipart/form-data 타입 이용
+            data: formData,
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+                // 나중에 화면 처리
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+            }
+
+        }); // $.ajax
+
+    }); // end click
+
+</script>
+</body>
+</html>
