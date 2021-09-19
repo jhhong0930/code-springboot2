@@ -1,6 +1,7 @@
 package org.zerock.mreview.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.zerock.mreview.dto.UploadResultDTO;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,7 +57,7 @@ public class UploadController {
         for (MultipartFile uploadFile : uploadFiles) {
 
             // 이미지 파일만 업로드 가능
-            if (uploadFile.getContentType().startsWith("image") == false) {
+            if (!uploadFile.getContentType().startsWith("image")) {
                 log.warn("This file is not image type");
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
@@ -77,7 +79,19 @@ public class UploadController {
             Path savePath = Paths.get(saveName);
 
             try {
-                uploadFile.transferTo(savePath); // 실제 이미지 저장
+
+                // 원본 파일 저장
+                uploadFile.transferTo(savePath);
+
+                // 섬네일 생성
+                String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator +
+                        "s_" + uuid + "_" + fileName;
+
+                // 섬네일 파일 이름은 중간에 s_로 시작하도록
+                File thumbnailFile = new File(thumbnailSaveName);
+
+                // 섬네일 생성
+                Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
 
                 resultDTOList.add(new UploadResultDTO(fileName, uuid, folderPath));
             } catch (IOException e) {
@@ -130,5 +144,30 @@ public class UploadController {
         return result;
     }
 
+    /**
+     * 업로드 파일 삭제
+     * - 파일의 URL이 년/월/일/uuid_파일명 으로 구성되어 있으므로 파일의 취를 찾아 삭제할 수 있다
+     * - 원본 파일과 함께 섬네일 파일도 같이 삭제
+     */
+    @PostMapping("/removeFile")
+    public ResponseEntity<Boolean> removeFile(String fileName) {
+
+        String srcFileName = null;
+
+        try {
+            srcFileName = URLDecoder.decode(fileName, "UTF-8");
+            File file = new File(uploadPath + File.separator + srcFileName);
+            boolean result = file.delete();
+
+            File thumbnail = new File(file.getParent(), "s_" + file.getName());
+
+            result = thumbnail.delete();
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

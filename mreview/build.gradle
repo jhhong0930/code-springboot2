@@ -30,6 +30,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.12'
+
 }
 
 test {
